@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const sliderContainer = document.querySelector('.slider-container');
+            const slides = document.querySelectorAll('.slide');
+            const slidesLength = slides.length;
+
+            let activeSlideIndex = 0;
+
+            const moveToSlide = (swap) => {
+                if (sliderContainer.classList.contains('slider-locked')) return;
+
+                activeSlideIndex = (activeSlideIndex + swap + slidesLength) % slidesLength;
+
+                sliderContainer.classList.add('slider-locked');
+
+                slides.forEach((slide, index) => {
+                    slide.classList.toggle('scrolling_active', index === activeSlideIndex);
+                });
+            }
+
+            const onTransitionEnd = () => {
+                sliderContainer.classList.remove('slider-locked');
+            }
+
+            const onScroll = (event) => {
+                event.preventDefault();
+                const swap = Math.sign(event.deltaY);
+                moveToSlide(swap);
+            }
+
+            document.addEventListener('wheel', onScroll);
+            sliderContainer.addEventListener('transitionend', onTransitionEnd);
+
+            var $wrap = $('#wrapper'),
+                lFollowX = 0,
+                lFollowY = 0,
+                x = 0,
+                y = 0,
+                friction = 1 / 12;
+
+            function animate() {
+                x += (lFollowX - x) * friction;
+                y += (lFollowY - y) * friction;
+
+                $wrap.css({
+                    'transform': 'translate(-50%, -50%) perspective(600px) rotateY(' + -x + 'deg) rotateX(' + y + 'deg)'
+                });
+                window.requestAnimationFrame(animate);
+            }
+
+            $(window).on('mousemove click', function (e) {
+                var lMouseX = Math.max(-100, Math.min(100, $(window).width() / 2 - e.clientX));
+                var lMouseY = Math.max(-100, Math.min(100, $(window).height() / 2 - e.clientY));
+                lFollowX = (12 * lMouseX) / 100; // 100 : 12 = lMouxeX : lFollow
+                lFollowY = (10 * lMouseY) / 100;
+            });
+
+            animate();
+        });
+    </script>
+</head>
+
+<body>
+
+
+
+
+    <div class="slider-container">
+        <div class="slide slide0 scrolling_active">
+            <div class="slide-part slide-left-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-left-part"></div>
+                </div>
+            </div>
+            <div class="slide-part slide-right-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-right-part">
+                        <h3 class="slide-title">Lorem Ipsum is simply dummy tex</h3>
+                        <p class="slide-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide slide1">
+            <div class="slide-part slide-left-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-left-part">
+                        <h3 class="slide-title">Lorem Ipsum is simply dummy tex</h3>
+                        <p class="slide-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-part slide-right-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-right-part"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide slide2">
+            <div class="slide-part slide-left-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-left-part"></div>
+                </div>
+            </div>
+            <div class="slide-part slide-right-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-right-part">
+                        <h3 class="slide-title">Lorem Ipsum is simply dummy tex</h3>
+                        <p class="slide-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide slide3">
+            <div class="slide-part slide-left-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-left-part">
+                        <h3 class="slide-title">Lorem Ipsum is simply dummy tex</h3>
+                        <p class="slide-subtitle">Lorem Ipsum is simply dummy text of the printing and typesetting
+                            industry.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-part slide-right-part">
+                <div class="slide-skew">
+                    <div class="slide-content content-right-part"></div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="block3Con">
+
+        <div id="wrapper">
+            <img src="./images/orange_polyset.png" alt="#" class="orange_polyset text">
+        </div>
+
+        <div class="textcon" data-aos="zoom-out-up" data-aos-offset="300" data-aos-delay="500">3D Animation</div>
+
+        <div class="block3ConSub">
+
+            <img src="./images/line_mesh.png" alt="#" class="vert-move" style="display: block; margin: 10px auto;">
+            <img src="./images/blur_mesh.png" alt="#" class="vert-move2"
+                style="display: block; margin: 10px auto; margin-top: -300px;">
+
+        </div>
+
+
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.148.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.148.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script src="./main.js" type="module"></script>
+
+   
+
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init(
+            //     {
+            //   offset: 120,
+            //   delay: 0}
+        );
+    </script>
+
+
+
+</body>
+
+</html>
